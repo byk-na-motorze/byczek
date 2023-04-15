@@ -1,0 +1,41 @@
+syntax = "proto3";
+package image;
+
+service Image {
+    rpc ListImage (ListImageRequest) returns (ListImageReply);
+    rpc AddImage (AddImageRequest) returns (AddImageReply);
+    rpc RemoveImage (RemoveImageRequest) returns (RemoveImageReply);
+}
+
+message ImageInfo {
+    string imageId = 1;
+    string profileId = 2;
+    int64 addedAt = 3;
+    string uri = 4;
+}
+
+message ListImageRequest {
+    repeated string imageIds = 1;
+}
+
+message ListImageReply {
+    repeated ImageInfo images = 1;
+}
+
+message AddImageRequest {
+    string accountId = 1;
+    string profileId = 2;
+    bytes imageContent = 3;
+}
+
+message AddImageReply {
+    ImageInfo imageInfo = 1;
+}
+
+message RemoveImageRequest {
+    string imageId = 1;
+}
+
+message RemoveImageReply {
+    bool removed = 1;
+}
