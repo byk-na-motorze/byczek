@@ -1,0 +1,57 @@
+syntax = "proto3";
+package meme;
+
+service Meme {
+    rpc ListMeme (ListMemeRequest) returns (ListMemeReply);
+    rpc AddMeme (AddMemeRequest) returns (AddMemeReply);
+    rpc RemoveMeme (RemoveMemeRequest) returns (RemoveMemeReply);
+}
+
+message MemeInfo {
+    string memeId = 1;
+    string profileId = 2;
+    int64 createdAt = 3;
+    string title = 4;
+    string description = 5;
+    repeated string categories = 6;
+    repeated string tags = 7;
+    bytes imageId = 8;
+}
+
+enum MemeSortBy {
+    InfiniteScroll = 0;
+    Date = 1;
+}
+
+message ListMemeRequest {
+    repeated string memeIds = 1;
+    repeated string memecategories = 2;
+    optional MemeSortBy sortBy = 3;
+    optional int64 limit = 4;
+    optional string offset = 5;
+}
+
+message ListMemeReply {
+    repeated MemeInfo MemeInfo = 1;
+}
+
+message AddMemeRequest {
+    string profileId = 1;
+    string title = 2;
+    string description = 3;
+    repeated string categories = 4;
+    repeated string tags = 5;
+    bytes image = 6;
+}
+
+message AddMemeReply {
+    MemeInfo memeInfo = 1;
+}
+
+message RemoveMemeRequest {
+    string memeId = 1;
+}
+
+message RemoveMemeReply {
+    bool deleted = 1;
+}

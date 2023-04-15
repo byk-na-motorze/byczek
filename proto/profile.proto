@@ -1,0 +1,94 @@
+syntax = "proto3";
+package profile;
+
+service Profile {
+    rpc GetProfiles (GetProfilesRequest) returns (GetProfilesReply);
+    rpc SetProfileInfo (SetProfileInfoRequest) returns (SetProfileInfoReply);
+    rpc SetProfileAvatar (SetProfileAvatarRequest) returns (SetProfileAvatarReply);
+    rpc SetColorScheme (SetColorSchemeRequest) returns (SetColorSchemeReply);
+}
+
+enum Gender {
+    male = 0;
+    female = 1;
+}
+
+message ProfileCompletion {
+    optional int64 basicInfo = 1;
+    optional int64 avatar = 2;
+    optional int64 phoneNumber = 3;
+    optional int64 address = 4;
+    optional int64 kyc = 5;
+    optional int64 creditCard = 6;
+    optional int64 firstPost = 7;
+    optional int64 colorScheme = 8;
+}
+
+message ColorScheme {
+    string dominantColor = 1;
+    string accentColor = 2;
+    string highlightColor = 3;
+    string stripesColor = 4;
+}
+
+message ProfileInfo {
+    optional string accountId = 1;
+    string profileId = 2;
+    string officialTile = 3;
+    string firstName = 4;
+    string middleName = 5;
+    string lastName = 6;
+    string chineseName = 7;
+    Gender gender = 8;
+    string avatarSmallId = 9;
+    string avatarBigId = 10;
+    ProfileCompletion profileCompletion = 11;
+    int64 registeredSince = 12;
+    ColorScheme colorScheme = 13;
+    repeated string nationalityIds = 14;
+}
+
+message GetProfilesRequest {
+    repeated string accountId = 1;
+    repeated string profileId = 2;
+}
+
+message GetProfilesReply {
+    repeated ProfileInfo profiles = 1;
+}
+
+message SetProfileInfoRequest {
+    string accountId = 1;
+    string profileId = 2;
+    string officialTile = 3;
+    string firstName = 4;
+    string middleName = 5;
+    string lastName = 6;
+    string chineseName = 7;
+    Gender gender = 8;
+    repeated string nationalityIds = 9;
+}
+
+message SetProfileInfoReply {
+    ProfileInfo profile = 1;
+}
+
+message SetProfileAvatarRequest {
+    string accountId = 1;
+    string profileId = 2;
+    bytes imageData = 3;
+}
+
+message SetProfileAvatarReply {
+    ProfileInfo profile = 1;
+}
+
+message SetColorSchemeRequest {
+    string accountId = 1;
+    string profileId = 2;
+    ColorScheme colorScheme = 3;
+}
+
+message SetColorSchemeReply {
+    ProfileInfo profile = 1;
+}

@@ -1,0 +1,37 @@
+syntax = "proto3";
+package email;
+
+service Email {
+    rpc SendEmail (SendEmailRequest) returns (SendEmailReply);
+    rpc StoreEmailTemplate (StoreEmailTemplateRequest) returns (StoreEmailTemplateReply);
+}
+
+message SendEmailRequest {
+    string accountId = 1;
+    string emailAddress = 2;
+    string title = 3;
+    string templateId = 4;
+    string templateVersion = 5;
+    string templateParameters = 6; //base64 serialized JSON
+}
+
+message SendEmailReply {
+    int64 sentAt = 1;
+}
+
+message StoreEmailTemplateRequest {
+    string templateId = 1;
+    string templateVersion = 2;
+    string templateAcceptedParameters = 3; //base64 serialized JSON
+    string htmlTemplate = 4;
+}
+
+enum StoreEmailTemplateOperationResult {
+    Created = 0;
+    Updated = 1;
+    Unchamged = 2;
+}
+
+message StoreEmailTemplateReply {
+    StoreEmailTemplateOperationResult operationResult = 1;
+}

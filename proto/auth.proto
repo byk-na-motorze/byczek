@@ -1,0 +1,96 @@
+syntax = "proto3";
+package auth;
+
+service Auth {
+    rpc CreateAccount (CreateAccountRequest) returns (CreateAccountReply);
+    rpc MagicLinkLogin (MagicLinkLoginRequest) returns (MagicLinkLoginReply);
+    rpc ExtendConnection (ExtendConnectionRequest) returns (ExtendConnectionReply);
+    rpc ListConnections (ListConnectionsRequest) returns (ListConnectionsReply);
+    rpc CloseConnection (CloseConnectionRequest) returns (CloseConnectionReply);
+    rpc ListPublicKeys (ListPublicKeysRequest) returns (ListPublicKeysReply);
+}
+
+message CreateAccountRequest {
+    string email = 1;
+}
+
+message CreateAccountReply {
+    int64 magicLinkValidTill = 1;
+}
+
+message DeviceInfo {
+    string deviceName = 1;
+    string browser = 2;
+    string os = 3;
+    string locale = 4;
+    string ipAddress = 5;
+}
+
+message MagicLinkLoginRequest {
+    string magicLinkContent = 1;
+    DeviceInfo deviceInfo = 2;
+}
+ 
+message MagicLinkLoginReply {
+    string accountId = 1;
+    string masterToken = 2;
+    string masterTokenPublicKeyId = 3;
+    string secondaryToken = 4;
+    string secondaryTokenPublicKeyId = 5;
+}
+
+message ExtendConnectionRequest {
+    string masterToken = 1;
+    DeviceInfo deviceInfo = 2;
+}
+ 
+message ExtendConnectionReply {
+    string secondaryToken = 1;
+    string secondaryTokenPublicKeyId = 2;
+}
+
+message ListConnectionsRequest {
+    repeated string accountIds = 1;
+}
+
+enum ConnectionState {
+    Open = 0;
+    Closed = 1;
+}
+
+message Connection {
+    string connectionId = 1;
+    string accountId = 2;
+    int64 createdAt = 3;
+    int64 expiresAt = 4;
+    string masterTokenPublicKeyId = 5;
+    ConnectionState connectionState = 6;
+    DeviceInfo deviceInfo = 7;
+}
+
+message ListConnectionsReply {
+    repeated Connection connection = 1;
+}
+
+message CloseConnectionRequest {
+    string connectionId = 1;
+    string masterToken = 2;
+}
+
+message CloseConnectionReply {
+    ConnectionState connectionState = 1; 
+}
+
+message ListPublicKeysRequest {
+    repeated string publicKeyIds = 1;
+}
+
+message PublicKeyInfo {
+    string publicKeyId = 1;
+    string publicKey = 2;
+    int64 expiresAt = 3;
+}
+
+message ListPublicKeysReply {
+    repeated PublicKeyInfo publicKeys = 1;
+}
