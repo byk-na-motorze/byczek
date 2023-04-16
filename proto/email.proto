@@ -2,11 +2,11 @@ syntax = "proto3";
 package email;
 
 service Email {
-    rpc SendEmail (SendEmailRequest) returns (SendEmailReply);
-    rpc StoreEmailTemplate (StoreEmailTemplateRequest) returns (StoreEmailTemplateReply);
+    rpc SendEmail (IN__SendEmail) returns (SendEmail__OUT);
+    rpc StoreEmailTemplate (IN__StoreEmailTemplate) returns (StoreEmailTemplate__OUT);
 }
 
-message SendEmailRequest {
+message IN__SendEmail {
     string accountId = 1;
     string emailAddress = 2;
     string title = 3;
@@ -15,11 +15,11 @@ message SendEmailRequest {
     string templateParameters = 6; //base64 serialized JSON
 }
 
-message SendEmailReply {
+message SendEmail__OUT {
     int64 sentAt = 1;
 }
 
-message StoreEmailTemplateRequest {
+message IN__StoreEmailTemplate {
     string templateId = 1;
     string templateVersion = 2;
     string templateAcceptedParameters = 3; //base64 serialized JSON
@@ -32,6 +32,6 @@ enum StoreEmailTemplateOperationResult {
     Unchamged = 2;
 }
 
-message StoreEmailTemplateReply {
+message StoreEmailTemplate__OUT {
     StoreEmailTemplateOperationResult operationResult = 1;
 }

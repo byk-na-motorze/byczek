@@ -2,10 +2,10 @@ syntax = "proto3";
 package profile;
 
 service Profile {
-    rpc GetProfiles (GetProfilesRequest) returns (GetProfilesReply);
-    rpc SetProfileInfo (SetProfileInfoRequest) returns (SetProfileInfoReply);
-    rpc SetProfileAvatar (SetProfileAvatarRequest) returns (SetProfileAvatarReply);
-    rpc SetColorScheme (SetColorSchemeRequest) returns (SetColorSchemeReply);
+    rpc GetProfiles (IN__GetProfiles) returns (GetProfiles__OUT);
+    rpc SetProfileInfo (IN__SetProfileInfo) returns (SetProfileInfo__OUT);
+    rpc SetProfileAvatar (IN__SetProfileAvatar) returns (SetProfileAvatar__OUT);
+    rpc SetColorScheme (IN__SetColorScheme) returns (SetColorScheme__OUT);
 }
 
 enum Gender {
@@ -48,16 +48,16 @@ message ProfileInfo {
     repeated string nationalityIds = 14;
 }
 
-message GetProfilesRequest {
+message IN__GetProfiles {
     repeated string accountId = 1;
     repeated string profileId = 2;
 }
 
-message GetProfilesReply {
+message GetProfiles__OUT {
     repeated ProfileInfo profiles = 1;
 }
 
-message SetProfileInfoRequest {
+message IN__SetProfileInfo {
     string accountId = 1;
     string profileId = 2;
     string officialTile = 3;
@@ -69,26 +69,26 @@ message SetProfileInfoRequest {
     repeated string nationalityIds = 9;
 }
 
-message SetProfileInfoReply {
+message SetProfileInfo__OUT {
     ProfileInfo profile = 1;
 }
 
-message SetProfileAvatarRequest {
+message IN__SetProfileAvatar {
     string accountId = 1;
     string profileId = 2;
     bytes imageData = 3;
 }
 
-message SetProfileAvatarReply {
+message SetProfileAvatar__OUT {
     ProfileInfo profile = 1;
 }
 
-message SetColorSchemeRequest {
+message IN__SetColorScheme {
     string accountId = 1;
     string profileId = 2;
     ColorScheme colorScheme = 3;
 }
 
-message SetColorSchemeReply {
+message SetColorScheme__OUT {
     ProfileInfo profile = 1;
 }

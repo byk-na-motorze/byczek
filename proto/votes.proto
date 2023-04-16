@@ -1,0 +1,107 @@
+syntax = "proto3";
+package votes;
+
+service Votes {
+    rpc GetVotingResults (IN__GetVotingResults) returns (GetVotingResults__OUT);
+    rpc GetVotes (IN__GetVotes) returns (GetVotes__OUT);
+    rpc SendVote (IN__SendVote) returns (SendVote__OUT);
+    rpc VoidVote (IN__VoidVote) returns (VoidVote__OUT);
+}
+
+enum VoteType {
+    UpDown = 0;
+    Rank = 1;
+    Order = 2;
+}
+
+enum VoteValTUpDown {
+    Up = 0;
+    Down = 1;
+}
+
+enum VoteValTRank {
+    Negative5 = 0;
+    Negative4 = 1;
+    Negative3 = 2;
+    Negative2 = 3;
+    Negative1 = 4;
+    Neutral = 5;
+    Positive1 = 6;
+    Positive2 = 7;
+    Positive3 = 8;
+    Positive4 = 9;
+    Positive5 = 10;
+}
+
+message VoteInfo {
+    string voteId = 1;
+    string profileId = 2;
+    string votingId = 3;
+    VoteType voteType = 4;
+    optional VoteValTUpDown voteValTUpDown = 5;
+    optional VoteValTRank voteValTRank = 6;
+    repeated string voteValTOrder = 7;
+}
+
+message VotingResultInfo {
+    message VoteValTUpDownStats {
+        VoteValTUpDown key = 1;
+        int64 score = 2;
+    }
+    message VoteValTRankStats {
+        VoteValTRank key = 1;
+        int64 score = 2;
+    }
+    message VoteValTOrderStats {
+        string key = 1;
+        int64 score = 2;
+    }
+
+    string votingId = 1;
+    optional string organizerId = 2;
+    VoteType voteType = 3;
+
+    repeated VoteValTUpDownStats voteValTUpDownStats = 4;
+    repeated VoteValTRankStats voteValTRankStats = 5;
+    repeated VoteValTOrderStats voteValTOrderStats = 6;
+}
+
+message IN__GetVotingResults {
+    repeated string votingIds = 1;
+}
+
+message GetVotingResults__OUT {
+    repeated VotingResultInfo votings = 1;
+}
+
+message IN__GetVotes {
+    repeated string voteIds = 1;
+    optional string votingId = 2;
+    optional string profileId = 3;
+}
+
+message GetVotes__OUT {
+    repeated VoteInfo votes = 1;
+}
+
+message IN__SendVote {
+    string votingId = 1;
+    VoteType voteType = 2;
+    optional VoteValTUpDown voteValTUpDown = 3;
+    optional VoteValTRank voteValTRank = 4;
+    repeated string voteValTOrder = 5;
+}
+
+message SendVote__OUT {
+    VoteInfo vote = 1;
+    VotingResultInfo votingResultInfo = 2;
+}
+
+message IN__VoidVote {
+    string voteId = 1;
+}
+
+message VoidVote__OUT {
+    bool voteVoid = 1;
+    VotingResultInfo votingResultInfo = 2;
+}

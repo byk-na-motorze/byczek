@@ -1,0 +1,81 @@
+syntax = "proto3";
+package comment;
+
+service Comment {
+    rpc ListComments (IN__ListComments) returns (ListComments__OUT);
+    rpc AddComment (IN__AddComment) returns (AddComment__OUT);
+    rpc EditComment (IN__EditComment) returns (EditComment__OUT);
+    rpc ScoreComment (IN_ScoreComment) returns (ScoreComment__OUT);
+    rpc RemoveComment (IN__RemoveComment) returns (RemoveComment__OUT);
+}
+
+message CommentInfo {
+    string commentId = 1;
+    string profileId = 2;
+    int64 addedAt = 3;
+    int64 modifiedAt = 4;
+    optional string imageId = 5;
+    string text = 6;
+    int64 sentiment = 7;
+    string rootObjectId = 8;
+    string parentObjectId = 9;
+    int64 repliesCount = 10;
+}
+
+enum CommentSortBy {
+    SocialCreditScore = 0;
+    Date = 1;
+}
+
+message IN__ListComments {
+    repeated string commentIds = 1;
+    optional string rootObjectId = 2;
+    optional string parentObjectId = 3;
+    optional CommentSortBy sortBy = 4;
+    optional int64 limit = 5;
+    optional string offset = 6;
+}
+
+message ListComments__OUT {
+    repeated CommentInfo comments = 1;
+}
+
+message IN__AddComment {
+    string rootObjectId = 1;
+    string parentObjectId = 2;
+    string text = 3;
+    optional bytes imageConent = 4;
+}
+
+message AddComment__OUT {
+    CommentInfo comment = 1;
+}
+
+message IN__EditComment {
+    string commentId = 1;
+    string text = 3;
+    bool removePreviousImage = 4;
+    optional bytes newImageConent = 5;
+}
+
+message EditComment__OUT {
+    CommentInfo comment = 1;
+}
+
+message IN_ScoreComment {
+    string commentId = 1;
+    int64 shiftSentiment = 2;
+    string affectedByObjectId = 3;
+}
+
+message ScoreComment__OUT {
+    CommentInfo comment = 1;
+}
+
+message IN__RemoveComment {
+    string commentId = 1;
+}
+
+message RemoveComment__OUT {
+    bool commentRemoved = 1;
+}

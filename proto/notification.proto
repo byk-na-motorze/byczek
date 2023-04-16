@@ -1,0 +1,80 @@
+syntax = "proto3";
+package notification;
+
+service Notification {
+    rpc ListNotifications (IN__ListNotifications) returns (ListNotifications__OUT);
+    rpc SendNotification (IN__SendNotification) returns (SendNotification__OUT);
+    rpc MarkNotificationAsDisplayed (IN__MarkNotificationAsDisplayed) returns (MarkNotificationAsDisplayed__OUT);
+    rpc MarkNotificationAsRead (IN__MarkNotificationAsRead) returns (MarkNotificationAsRead__OUT);
+}
+
+enum NotificationType {
+    Alert = 0;
+    System = 1;
+    UserGenerated = 2;
+    Counter = 3;
+}
+
+message NotificationInfo {
+    string notificationId = 1;
+    string profileId = 2;
+    string senderProfileId = 3;
+    string referredObjectId = 4;
+    string content = 5;
+    string thumbnailImageId = 6;
+    string iconImageId = 7;
+    NotificationType notificationType = 8;
+
+    int64 sentAt = 9;
+    optional int64 displayedAt = 10;
+    optional int64 readAt = 11;
+}
+
+enum NotificationsSortBy {
+    Latest = 0;
+    Unread = 1;
+    NotSeen = 2;
+    Type = 3;
+}
+
+message IN__ListNotifications {
+    repeated string profileIds = 1;
+    optional NotificationsSortBy sortBy = 2;
+    optional int64 limit = 3;
+    optional string offset = 4;
+}
+
+message ListNotifications__OUT {
+    repeated NotificationInfo notifications = 1;
+}
+
+message IN__SendNotification {
+    string notificationId = 1;
+    string profileId = 2;
+    string senderProfileId = 3;
+    string referredObjectId = 4;
+    string content = 5;
+    string thumbnailImageId = 6;
+    string iconImageId = 7;
+    NotificationType notificationType = 8;
+}
+
+message SendNotification__OUT {
+    NotificationInfo notification = 1;
+}
+
+message IN__MarkNotificationAsDisplayed {
+    string notificationId = 1;
+}
+
+message MarkNotificationAsDisplayed__OUT {
+    NotificationInfo notification = 1;
+}
+
+message IN__MarkNotificationAsRead {
+    string notificationId = 1;
+}
+
+message MarkNotificationAsRead__OUT {
+    NotificationInfo notification = 1;
+}

@@ -2,9 +2,9 @@ syntax = "proto3";
 package image;
 
 service Image {
-    rpc ListImage (ListImageRequest) returns (ListImageReply);
-    rpc AddImage (AddImageRequest) returns (AddImageReply);
-    rpc RemoveImage (RemoveImageRequest) returns (RemoveImageReply);
+    rpc ListImage (IN__ListImage) returns (ListImage__OUT);
+    rpc AddImage (IN__AddImage) returns (AddImage__OUT);
+    rpc RemoveImage (IN__RemoveImage) returns (RemoveImage__OUT);
 }
 
 message ImageInfo {
@@ -14,28 +14,28 @@ message ImageInfo {
     string uri = 4;
 }
 
-message ListImageRequest {
+message IN__ListImage {
     repeated string imageIds = 1;
 }
 
-message ListImageReply {
+message ListImage__OUT {
     repeated ImageInfo images = 1;
 }
 
-message AddImageRequest {
+message IN__AddImage {
     string accountId = 1;
     string profileId = 2;
     bytes imageContent = 3;
 }
 
-message AddImageReply {
+message AddImage__OUT {
     ImageInfo imageInfo = 1;
 }
 
-message RemoveImageRequest {
+message IN__RemoveImage {
     string imageId = 1;
 }
 
-message RemoveImageReply {
+message RemoveImage__OUT {
     bool removed = 1;
 }
